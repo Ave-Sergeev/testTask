@@ -12,23 +12,21 @@ import java.util.*
 @RequestMapping("/api/")
 class UserController(val userServiceImpl: UserServiceImpl) {
 
-    //Принимаем на вход JSON, по которому в БД создаем пользователя, возвращаем 201 статус при успехе.
+    //Принимаем на вход JSON, по которому в БД создаем пользователя
     @PostMapping(value = ["/users/create"])
-    fun createUser(@RequestBody user: User): ResponseEntity<*>? {
-        userServiceImpl.save(user)
-        return ResponseEntity<Any>(HttpStatus.CREATED)
+    fun createUser(@RequestBody user: User): User {
+        return userServiceImpl.save(user)
     }
 
     //Возвращаем список всех пользователей из БД приложения
     @GetMapping(value = ["/users/getAll"])
-    fun getAllUser(): ResponseEntity<User> {
-        val user: List<User> = userServiceImpl.findAll()
-        return ResponseEntity<User>(user, HttpStatus.OK)
+    fun getAllUser(): List<User> {
+        return userServiceImpl.findAll()
     }
 
     //Возвращаем прользователя по заданному id
     @GetMapping(value = ["/users/{id}"])
-    fun searchUser(@PathVariable(name = "id") id: Long): Optional<User> {
+    fun searchUser(@PathVariable(name = "id") id: Long): User {
         return userServiceImpl.findById(id)
     }
 }
